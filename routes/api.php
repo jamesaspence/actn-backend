@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
-
+    Route::get('/auth', function () { return response(null); });
 });
 
 Route::post('/login', 'AuthController@login')->name('login');
