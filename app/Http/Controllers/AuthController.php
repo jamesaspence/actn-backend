@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
         $uniqueToken = base64_encode(Str::random(36));
 
-        if ($this->tokenAlreadyExists($user, $uniqueToken)) {
+        if ($this->tokenAlreadyExists($uniqueToken)) {
             return $this->generateToken($user);
         }
 
@@ -78,7 +78,7 @@ class AuthController extends Controller
         return $authToken;
     }
 
-    private function tokenAlreadyExists(Authenticatable $user, $token)
+    private function tokenAlreadyExists($token)
     {
         return AuthToken::query()
             ->where('token', '=', $token)
