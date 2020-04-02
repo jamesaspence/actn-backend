@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property string email
+ * @property string password
+ * @property string username
+ */
 class User extends Authenticatable
 {
     use Notifiable;
