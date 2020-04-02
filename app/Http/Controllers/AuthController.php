@@ -64,7 +64,7 @@ class AuthController extends Controller
 
     private function generateToken(Authenticatable $user): AuthToken
     {
-        $uniqueToken = Str::random();
+        $uniqueToken = base64_encode(Str::random(36));
 
         $authToken = new AuthToken();
         $authToken->token = $uniqueToken;
