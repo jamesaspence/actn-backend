@@ -35,15 +35,15 @@ class AuthController extends Controller
         $creds = $request->only('email', 'password');
 
         $guard = $this->authManager->guard();
-        if (!$guard->once($creds)) {
-            return response()->setStatusCode(401);
+        if (!$guard->validate($creds)) {
+            return response(null, 401);
         }
 
         $user = $guard->user();
         $authToken = $this->generateToken($user);
         return response([
             'message' => 'success',
-            'token' => $authToken->getPlainTextToken()
+            'token' => $authToken->token
         ]);
     }
 
@@ -51,28 +51,25 @@ class AuthController extends Controller
     {
         $user = new User();
         $user->username = $request->username;
-        $user->password = $request->password;
+        $user->password = $this->hasher->make($request->password);
         $user->email = $request->email;
         $user->save();
 
         $authToken = $this->generateToken($user);
         return response([
             'message' => 'success',
-            'token' => $authToken->getPlainTextToken()
+            'token' => $authToken->token
         ]);
     }
 
     private function generateToken(Authenticatable $user): AuthToken
     {
         $uniqueToken = Str::random();
-        $encryptedToken = encrypt($uniqueToken);
 
         $authToken = new AuthToken();
-        $authToken->token = $encryptedToken;
+        $authToken->token = $uniqueToken;
         $authToken->user()->associate($user);
         $authToken->save();
-
-        $authToken->setPlainTextToken($uniqueToken);
 
         return $authToken;
     }

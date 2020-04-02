@@ -21,6 +21,13 @@ class RegistrationRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'email' => strtolower($this->email)
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -29,7 +36,7 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email',
+            'email' => 'required|string|email|unique:users',
             'username' => 'required|string',
             'password' => 'required|string|min:6|confirmed',
         ];
