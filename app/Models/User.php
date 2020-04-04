@@ -15,6 +15,11 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * @var AuthToken
+     */
+    private $currentToken;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -40,4 +45,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @param mixed $currentToken
+     */
+    public function setCurrentToken($currentToken): void
+    {
+        $this->currentToken = $currentToken;
+    }
+
+    /**
+     * @return AuthToken
+     */
+    public function getCurrentToken(): AuthToken
+    {
+        return $this->currentToken;
+    }
 }

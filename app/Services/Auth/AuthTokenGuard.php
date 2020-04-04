@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 
 
 use App\Models\AuthToken;
+use App\Models\User;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
@@ -44,15 +45,18 @@ class AuthTokenGuard implements Guard
             return $this->authFailed();
         }
 
+        /** @var User $user */
         $user = $this->provider->retrieveById($token->getId());
         if (is_null($user)) {
             return $this->authFailed();
         }
 
-        if (!$this->authTokenExists($user, $token)) {
+        $currentToken = $this->getAuthToken($user, $token);
+        if (is_null($currentToken)) {
             return $this->authFailed();
         }
 
+        $user->setCurrentToken($currentToken);
         return $this->user = $user;
     }
 
@@ -102,7 +106,7 @@ class AuthTokenGuard implements Guard
         return null;
     }
 
-    private function authTokenExists(Authenticatable $user, AuthorizationHeaderToken $token): bool
+    private function getAuthToken(Authenticatable $user, AuthorizationHeaderToken $token): AuthToken
     {
         /*
          * TODO any way for us to secure these tokens in DB?
@@ -110,9 +114,8 @@ class AuthTokenGuard implements Guard
          * TODO Maybe we generate a base 64 token and store that in DB w/ encrypted value and id?
          * TODO Then that base 64 code is always the same presumably?
          */
-        return AuthToken::query()
-            ->where('user_id', '=', $user->getAuthIdentifier())
+        return AuthToken::where('user_id', '=', $user->getAuthIdentifier())
             ->where('token', '=', $token->getToken())
-            ->exists();
+            ->first();
     }
 }

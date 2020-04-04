@@ -21,6 +21,10 @@ Route::middleware('auth:api')->group(function () {
             'user' => Auth::user()
         ]);
     });
+
+    Route::post('/prices', 'PriceController@createPrice');
+
+    Route::post('/logout', 'AuthController@logout');
 });
 
 Route::post('/login', 'AuthController@login')->name('login');

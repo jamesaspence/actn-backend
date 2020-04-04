@@ -64,6 +64,19 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout()
+    {
+        /** @var User $user */
+        $user = $this->authManager->guard()->user();
+
+        try {
+            $user->getCurrentToken()->delete();
+        } catch (\Exception $e) {
+            //TODO log out error
+        }
+        return response(null, 204);
+    }
+
     private function generateToken(Authenticatable $user): AuthToken
     {
         $uniqueToken = base64_encode(Str::random(36));
