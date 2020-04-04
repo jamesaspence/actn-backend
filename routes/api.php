@@ -29,3 +29,9 @@ Route::middleware('auth:api')->group(function () {
 
 Route::post('/login', 'AuthController@login')->name('login');
 Route::post('/register', 'AuthController@register')->name('register');
+
+Route::get('/heartbeat', function () {
+    return response([
+        'message' => 'success'
+    ]);
+});
