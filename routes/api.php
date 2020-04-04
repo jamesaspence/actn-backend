@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/auth', function () { return response(null); });
+    Route::get('/auth/check', function () {
+        return response([
+            'user' => Auth::user()
+        ]);
+    });
 });
 
 Route::post('/login', 'AuthController@login')->name('login');

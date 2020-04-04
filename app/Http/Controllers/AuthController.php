@@ -41,10 +41,10 @@ class AuthController extends Controller
 
         $user = $guard->user();
         $authToken = $this->generateToken($user);
-        //TODO return user object
         return response([
             'message' => 'success',
-            'token' => $authToken->token
+            'token' => $authToken->token,
+            'user' => $user
         ]);
     }
 
@@ -57,10 +57,10 @@ class AuthController extends Controller
         $user->save();
 
         $authToken = $this->generateToken($user);
-        //TODO return user object
         return response([
             'message' => 'success',
-            'token' => $authToken->token
+            'token' => $authToken->token,
+            'user' => $user
         ]);
     }
 
