@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -10,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string email
  * @property string password
  * @property string username
+ * @property Collection currentPurchases
  */
 class User extends Authenticatable
 {
