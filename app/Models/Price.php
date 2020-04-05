@@ -4,12 +4,11 @@
 namespace App\Models;
 
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string time
- * @property Carbon date
+ * @property string date
  * @property integer price
  */
 class Price extends Model
