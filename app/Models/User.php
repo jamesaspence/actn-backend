@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -45,6 +46,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function currentPurchases()
+    {
+        return $this->hasMany(Purchase::class)
+            ->where('created_at', '>', Carbon::now()->startOfWeek());
+    }
 
     /**
      * @param mixed $currentToken
