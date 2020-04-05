@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Http\Resources\AuthenticatedUserResource;
 use App\Models\AuthToken;
 use App\Models\User;
 use Illuminate\Auth\AuthManager;
@@ -44,7 +45,7 @@ class AuthController extends Controller
         return response([
             'message' => 'success',
             'token' => $authToken->token,
-            'user' => $user
+            'user' => new AuthenticatedUserResource($user)
         ]);
     }
 
@@ -60,7 +61,7 @@ class AuthController extends Controller
         return response([
             'message' => 'success',
             'token' => $authToken->token,
-            'user' => $user
+            'user' => new AuthenticatedUserResource($user)
         ]);
     }
 
