@@ -26,8 +26,7 @@ class PurchaseResource extends JsonResource
             'id' => $this->id,
             'price' => $this->price,
             'date' => $this->date,
-            'quantity' => $this->quantity,
-            'user' => new PublicUserResource($this->user)
+            'quantity' => $this->quantity
         ];
     }
 }
