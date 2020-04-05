@@ -23,6 +23,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::post('/prices', 'PriceController@createPrice');
+    Route::post('/purchases', 'PurchaseController@recordPurchase');
 
     Route::post('/logout', 'AuthController@logout');
 });
