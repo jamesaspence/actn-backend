@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -9,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string email
  * @property string password
  * @property string username
+ * @property Collection currentPurchases
  */
 class User extends Authenticatable
 {
@@ -34,7 +37,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'created_at', 'updated_at'
+        'password', 'remember_token', 'created_at', 'updated_at', 'email'
     ];
 
     /**
@@ -45,6 +48,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function currentPurchases()
+    {
+        return $this->hasMany(Purchase::class)
+            ->where('created_at', '>', Carbon::now()->startOfWeek());
+    }
 
     /**
      * @param mixed $currentToken
