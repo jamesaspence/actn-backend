@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+    Route::get('/auth/check', function () {
+        return response([
+            'user' => Auth::user()
+        ]);
+    });
+
+    Route::post('/prices', 'PriceController@createPrice');
+
+    Route::post('/logout', 'AuthController@logout');
+});
+
+Route::post('/login', 'AuthController@login')->name('login');
+Route::post('/register', 'AuthController@register')->name('register');
+
+Route::get('/heartbeat', function () {
+    return response([
+        'message' => 'success'
+    ]);
 });
