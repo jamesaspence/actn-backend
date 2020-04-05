@@ -30,11 +30,20 @@ class CreatePriceRequest extends FormRequest
      */
     public function rules()
     {
-        //TODO validate user has not already created a price for this time period
         return [
             'price' => 'required|integer|min:1',
-            'date' => 'required|date',
-            'time' => ['required', Rule::in([Price::TIME_MORNING, Price::TIME_EVENING])]
+            'date' => [
+                'required',
+                'date',
+                Rule::unique('prices')->where('user_id', $this->user()->id)
+                    ->where('time', $this->time)
+            ],
+            'time' => [
+                'required',
+                Rule::in([Price::TIME_MORNING, Price::TIME_EVENING]),
+                Rule::unique('prices')->where('user_id', $this->user()->id)
+                    ->where('date', $this->date)
+            ]
         ];
     }
 }
